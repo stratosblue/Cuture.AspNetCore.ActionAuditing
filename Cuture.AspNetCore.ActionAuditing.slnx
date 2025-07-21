@@ -1,0 +1,21 @@
+<Solution>
+  <Folder Name="/sample/">
+    <Project Path="sample/SampleFullAuditWebApp/SampleFullAuditWebApp.csproj" />
+    <Project Path="sample/SampleWebApp/SampleWebApp.csproj" />
+  </Folder>
+  <Folder Name="/solution items/">
+    <File Path=".editorconfig" />
+    <File Path="CodeMaid.config" />
+    <File Path="Directory.Build.props" />
+    <File Path="global.json" />
+    <File Path="LICENSE.txt" />
+    <File Path="README.md" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/Cuture.AspNetCore.ActionAuditing/Cuture.AspNetCore.ActionAuditing.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/Cuture.AspNetCore.ActionAuditing.Test/Cuture.AspNetCore.ActionAuditing.Test.csproj" />
+    <Project Path="test/Cuture.AspNetCore.ActionAuditing.TestHost/Cuture.AspNetCore.ActionAuditing.TestHost.csproj" />
+  </Folder>
+</Solution>

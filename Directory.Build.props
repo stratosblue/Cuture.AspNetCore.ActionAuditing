@@ -1,0 +1,39 @@
+﻿<Project>
+  <PropertyGroup>
+    <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <LangVersion>latest</LangVersion>
+    <IsPackable>false</IsPackable>
+
+    <UseArtifactsOutput>true</UseArtifactsOutput>
+  </PropertyGroup>
+
+  <!--Package-->
+  <PropertyGroup>
+
+    <Version>1.0.0-pre-002</Version>
+    
+    <Description>A auditing framework for AspNetCore. Support Controller and MinimalAPI. Make permission and operation auditing easier.</Description>
+
+    <Authors>stratos</Authors>
+
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/stratosblue/Cuture.AspNetCore.ActionAuditing</PackageProjectUrl>
+
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>$(PackageProjectUrl)</RepositoryUrl>
+
+    <PackageTags>aspnet aspnetcore audit auditing actionauditing action-auditing controller minimalapi api endpoint log</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(Configuration)' == 'Release'">
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.*" PrivateAssets="All" />
+  </ItemGroup>
+
+  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+</Project>
