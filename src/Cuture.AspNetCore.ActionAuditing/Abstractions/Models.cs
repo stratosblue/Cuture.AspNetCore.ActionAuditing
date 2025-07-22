@@ -62,6 +62,11 @@ public record ActionAuditingExecutingContext(HttpContext HttpContext,
     public Exception? Exception { get; set; }
 
     /// <summary>
+    /// 执行权限审核结果
+    /// </summary>
+    public PermissionAuditResult? PermissionAuditResult { get; set; }
+
+    /// <summary>
     /// 动作执行的结果
     /// </summary>
     public object? Result { get; set; }

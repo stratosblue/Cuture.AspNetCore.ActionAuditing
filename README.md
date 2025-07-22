@@ -95,7 +95,21 @@ dotnet add package Cuture.AspNetCore.ActionAuditing --prerelease
    ```
 至此完成存储的配置，审计信息将会使用 `SampleAuditDataStorage` 进行存储
 
-## 3. 示例
+## 3. 可替换接口列表
+
+实现对应类型后通过加入DI容器等方式覆盖默认逻辑
+
+|接口|释义|功能|
+|--|--|--|
+|`IActionAuditingExecutingContextAccessor`|动作审计执行上下文访问器|在动作中访问审计上下文|
+|`IActionAuditingFilter`|动作审核过滤器|过滤动作是否需要审计|
+|`IActionAuditingHandler`|动作审核处理器|处理审计中拒绝、成功、异常等场景时的逻辑|
+|`IActionRequiredPermissionResolver`|动作所需权限解析器|通过`HttpContext`解析其所需的权限信息|
+|`IAuditDataStorage`|审计数据存储器|存储审计信息|
+|`IAuditValueStoreAccessor`|审查数据值存储访问器|访问数据值存储`IAuditValueStore`|
+|`IExecutingPermissionAuditor`|执行权限审核器|验证审计上下文是否允许执行动作|
+
+## 4. 示例
 更多功能参照示例程序
 - 基础的权限校验: [sample/SampleWebApp](sample/SampleWebApp/)
 - 完整的权限校验及数据变动审计: [sample/SampleFullAuditWebApp](sample/SampleFullAuditWebApp/)

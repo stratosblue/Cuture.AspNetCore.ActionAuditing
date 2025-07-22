@@ -13,7 +13,7 @@ public interface IExecutingPermissionAuditor
     /// <param name="context">上下文</param>
     /// <param name="cancellationToken"></param>
     /// <returns>返回 <see langword="false"/> 则表示无权限，拒绝执行</returns>
-    ValueTask<bool> AuditingAsync(ActionAuditingExecutingContext context, CancellationToken cancellationToken = default);
+    ValueTask<PermissionAuditResult> AuditingAsync(ActionAuditingExecutingContext context, CancellationToken cancellationToken = default);
 
     #endregion Public 方法
 }

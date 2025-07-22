@@ -1,14 +1,14 @@
 ﻿namespace Cuture.AspNetCore.ActionAuditing.Abstractions;
 
 /// <summary>
-/// 动作参数访问器
+/// 动作审计执行上下文访问器
 /// </summary>
 public interface IActionAuditingExecutingContextAccessor
 {
     #region Public 属性
 
     /// <summary>
-    /// 当前动作的参数
+    /// 当前动作的审计执行上下文
     /// </summary>
     ActionAuditingExecutingContext? Current { get; set; }
 

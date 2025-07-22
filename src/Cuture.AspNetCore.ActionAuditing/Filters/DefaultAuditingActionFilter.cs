@@ -67,8 +67,9 @@ public class DefaultAuditingActionFilter(IActionRequiredPermissionResolver actio
                 return;
             }
 
-            var hasPermission = await executingPermissionAuditor.AuditingAsync(context, cancellationToken);
-            if (!hasPermission)
+            var permissionAuditResult = await executingPermissionAuditor.AuditingAsync(context, cancellationToken);
+            context.PermissionAuditResult = permissionAuditResult;
+            if (!permissionAuditResult)
             {
                 context.ExecutionFlag |= ActionExecutionFlag.PermissionAuditDenied;
                 actionExecutingContext.Result ??= new StatusCodeResult(StatusCodes.Status403Forbidden);

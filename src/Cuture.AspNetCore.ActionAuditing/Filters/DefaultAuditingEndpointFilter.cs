@@ -47,8 +47,9 @@ public class DefaultAuditingEndpointFilter(IActionRequiredPermissionResolver act
                 return await next(invocationContext);
             }
 
-            var hasPermission = await executingPermissionAuditor.AuditingAsync(context, cancellationToken);
-            if (!hasPermission)
+            var permissionAuditResult = await executingPermissionAuditor.AuditingAsync(context, cancellationToken);
+            context.PermissionAuditResult = permissionAuditResult;
+            if (!permissionAuditResult)
             {
                 context.ExecutionFlag |= ActionExecutionFlag.PermissionAuditDenied;
                 await actionAuditingHandler.HandleDeniedAsync(context, cancellationToken);

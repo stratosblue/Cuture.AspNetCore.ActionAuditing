@@ -14,7 +14,7 @@
   <!--Package-->
   <PropertyGroup>
 
-    <Version>1.0.0-pre-002</Version>
+    <Version>1.0.0-pre-003</Version>
     
     <Description>A auditing framework for AspNetCore. Support Controller and MinimalAPI. Make permission and operation auditing easier.</Description>
 

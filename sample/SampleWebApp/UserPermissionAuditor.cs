@@ -6,7 +6,7 @@ namespace SampleWebApp;
 
 internal class UserPermissionAuditor(DataDbContext dataDbContext) : IExecutingPermissionAuditor
 {
-    public async ValueTask<bool> AuditingAsync(ActionAuditingExecutingContext context, CancellationToken cancellationToken = default)
+    public async ValueTask<PermissionAuditResult> AuditingAsync(ActionAuditingExecutingContext context, CancellationToken cancellationToken = default)
     {
         //check permission with your logic
         const long UserId = 1234;

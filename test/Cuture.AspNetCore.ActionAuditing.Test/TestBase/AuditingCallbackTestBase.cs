@@ -22,7 +22,7 @@ public abstract class AuditingCallbackTestBase : TestServerBaseTest
     /// <summary>
     /// 当前的同步回调
     /// </summary>
-    protected Func<ActionAuditingExecutingContext, bool> CurrentAuditingSyncCallback
+    protected Func<ActionAuditingExecutingContext, PermissionAuditResult> CurrentAuditingSyncCallback
     {
         set => ServiceScope.ServiceProvider.GetRequiredService<CallbackExecutingPermissionAuditor>().AuditingCallbak = (context, _) => Task.FromResult(value(context));
     }

@@ -6,7 +6,7 @@ public class CallbackExecutingPermissionAuditor : IExecutingPermissionAuditor
 {
     #region Public 委托
 
-    public delegate Task<bool> AuditingDelegate(ActionAuditingExecutingContext context, CancellationToken cancellationToken = default);
+    public delegate Task<PermissionAuditResult> AuditingDelegate(ActionAuditingExecutingContext context, CancellationToken cancellationToken = default);
 
     #endregion Public 委托
 
@@ -18,7 +18,7 @@ public class CallbackExecutingPermissionAuditor : IExecutingPermissionAuditor
 
     #region Public 方法
 
-    public async ValueTask<bool> AuditingAsync(ActionAuditingExecutingContext context, CancellationToken cancellationToken = default)
+    public async ValueTask<PermissionAuditResult> AuditingAsync(ActionAuditingExecutingContext context, CancellationToken cancellationToken = default)
     {
         return await AuditingCallbak(context, cancellationToken);
     }
