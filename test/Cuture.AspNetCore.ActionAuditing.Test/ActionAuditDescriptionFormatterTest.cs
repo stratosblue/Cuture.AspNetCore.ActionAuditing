@@ -1,165 +1,184 @@
-﻿using Cuture.AspNetCore.ActionAuditing.Abstractions;
-using Moq;
+﻿// 代码由 AI 自动生成
 
 namespace Cuture.AspNetCore.ActionAuditing.Test;
 
 /// <summary>
-/// <see cref="ActionAuditDescriptionFormatter"/> 的单元测试
+/// ActionAuditDescriptionFormatter 测试类
 /// </summary>
 [TestClass]
 public class ActionAuditDescriptionFormatterTest
 {
-    /// <summary>
-    /// 测试当format包含多个插值表达式时正确处理所有表达式
-    /// </summary>
-    [TestMethod]
-    public void Format_ShouldHandleMultipleInterpolations()
-    {
-        // Arrange
-        const string format = "User {user} has {count} items";
-        const string userValue = "testUser";
-        const int countValue = 5;
+    #region Private 字段
 
-        var mockValueStore = new Mock<IAuditValueStore>();
-        mockValueStore.Setup(x => x.TryGetValue("user", out It.Ref<object?>.IsAny))
-                     .Returns(new TryGetValueCallback((string key, out object value) =>
-                     {
-                         value = userValue;
-                         return true;
-                     }));
-        mockValueStore.Setup(x => x.TryGetValue("count", out It.Ref<object?>.IsAny))
-                     .Returns(new TryGetValueCallback((string key, out object value) =>
-                     {
-                         value = countValue;
-                         return true;
-                     }));
+    private static readonly DefaultActionArguments s_mockArguments = new([]);
 
-        // Act
-        var result = ActionAuditDescriptionFormatter.Format(format, mockValueStore.Object, null);
+    private static readonly DefaultAuditValueStore s_mockValueStore = [];
 
-        // Assert
-        Assert.AreEqual($"User {userValue} has {countValue} items", result.Description);
-    }
+    #endregion Private 字段
 
-    [TestMethod]
-    public void Format_ShouldReturnError_WhenInterpolationFails()
-    {
-        // Arrange
-        const string format = "Invalid {obj.PropertyThatThrows}";
-        var throwingObj = new ThrowingPropertyAccessor();
-
-        var mockValueStore = new Mock<IAuditValueStore>();
-        mockValueStore.Setup(x => x.TryGetValue("obj", out It.Ref<object?>.IsAny))
-                     .Returns(new TryGetValueCallback((string key, out object value) =>
-                     {
-                         value = throwingObj;
-                         return true;
-                     }));
-
-        // Act
-        var result = ActionAuditDescriptionFormatter.Format(format, mockValueStore.Object, null);
-
-        // Assert
-        Assert.IsTrue(result.Description.Contains("[Error]"));
-    }
+    #region Public 方法
 
     /// <summary>
-    /// 测试当format包含插值表达式且valueStore有值时返回正确格式化结果
+    /// 测试格式化复杂属性路径
     /// </summary>
     [TestMethod]
-    public void Format_ShouldReturnFormattedValue_WhenValueStoreHasValue()
+    public void Should_Format_ComplexPropertyPath_Success()
     {
-        // Arrange
-        const string format = "Value is {value}";
-        const string expectedValue = "testValue";
+        var format = "用户信息: {User.Profile.Name}";
+        var expectedName = "TestProfile";
+        var user = new { Profile = new { Name = expectedName } };
 
-        var mockValueStore = new Mock<IAuditValueStore>();
-        mockValueStore.Setup(x => x.TryGetValue("value", out It.Ref<object?>.IsAny))
-                     .Returns(new TryGetValueCallback((string key, out object value) =>
-                     {
-                         value = expectedValue;
-                         return true;
-                     }));
+        s_mockValueStore.Set("User", user);
+        var result = ActionAuditDescriptionFormatter.Format(format, s_mockValueStore, null);
 
-        // Act
-        var result = ActionAuditDescriptionFormatter.Format(format, mockValueStore.Object, null);
-
-        // Assert
-        Assert.AreEqual($"Value is {expectedValue}", result.Description);
-    }
-
-    /// <summary>
-    /// 测试当format包含插值表达式但valueStore为null时返回null值
-    /// </summary>
-    [TestMethod]
-    public void Format_ShouldReturnNullValue_WhenValueStoreIsNull()
-    {
-        // Arrange
-        const string format = "Value is {value}";
-
-        // Act
-        var result = ActionAuditDescriptionFormatter.Format(format, null, null);
-
-        // Assert
-        Assert.AreEqual("Value is null", result.Description);
-    }
-
-    /// <summary>
-    /// 测试当format不包含插值表达式时直接返回原始格式
-    /// </summary>
-    [TestMethod]
-    public void Format_ShouldReturnOriginalFormat_WhenNoInterpolation()
-    {
-        // Arrange
-        const string format = "Plain text format";
-
-        // Act
-        var result = ActionAuditDescriptionFormatter.Format(format, null, null);
-
-        // Assert
-        Assert.AreEqual(format, result.Description);
         Assert.AreEqual(format, result.Format);
+        Assert.AreEqual($"用户信息: {expectedName}", result.Description);
     }
 
     /// <summary>
-    /// 测试当format为null时抛出ArgumentNullException
+    /// 测试格式化混合静态文本和变量
     /// </summary>
     [TestMethod]
-    public void Format_ShouldThrowArgumentNullException_WhenFormatIsNull()
+    public void Should_Format_MixedStaticAndVariables_Success()
     {
-        Assert.ThrowsExactly<ArgumentNullException>(() => ActionAuditDescriptionFormatter.Format(null!, null, null));
-    }
-
-    /// <summary>
-    /// 测试缓存机制是否正常工作
-    /// </summary>
-    [TestMethod]
-    public void Format_ShouldUseCache_ForSameFormatString()
-    {
-        // Arrange
-        const string format = "Cached format {value}";
-        var mockValueStore = new Mock<IAuditValueStore>();
-
-        // Act - First call should create cache
-        var firstResult = ActionAuditDescriptionFormatter.Format(format, mockValueStore.Object, null);
-
-        // Second call should use cache
-        var secondResult = ActionAuditDescriptionFormatter.Format(format, mockValueStore.Object, null);
-
-        // Assert
-        Assert.AreEqual(firstResult.Description, secondResult.Description);
-    }
-
-    private class ThrowingPropertyAccessor
-    {
-        public object PropertyThatThrows
+        var format = "用户: {User.Name}, 年龄: {User.Age}, 来自: {User.Address.City}";
+        var user = new
         {
-            get { throw new InvalidOperationException("Property access failed"); }
-        }
-    }
-}
+            Name = "Test",
+            Age = 30,
+            Address = new { City = "Beijing" }
+        };
 
-/// <summary>
-/// 用于模拟TryGetValue回调的委托
-/// </summary>
-internal delegate bool TryGetValueCallback(string key, out object value);
+        s_mockValueStore.Set("User", user);
+        var result = ActionAuditDescriptionFormatter.Format(format, s_mockValueStore, null);
+
+        Assert.AreEqual(format, result.Format);
+        Assert.AreEqual("用户: Test, 年龄: 30, 来自: Beijing", result.Description);
+    }
+
+    /// <summary>
+    /// 测试格式化当属性访问出错时显示错误标记
+    /// </summary>
+    [TestMethod]
+    public void Should_Format_ShowError_WhenPropertyAccessFailed()
+    {
+        var format = "用户: {User.ValidProperty.Property}";
+        var user = new { ValidProperty = new ExceptionTestClass() };
+
+        s_mockValueStore.Set("User", user);
+        var result = ActionAuditDescriptionFormatter.Format(format, s_mockValueStore, null);
+
+        Assert.AreEqual(format, result.Format);
+        Assert.AreEqual("用户: [Error]", result.Description);
+    }
+
+    /// <summary>
+    /// 测试格式化当值为null时显示null
+    /// </summary>
+    [TestMethod]
+    public void Should_Format_ShowNull_WhenValueIsNull()
+    {
+        var format = "用户: {UserName}";
+
+        var result = ActionAuditDescriptionFormatter.Format(format, s_mockValueStore, null);
+
+        Assert.AreEqual(format, result.Format);
+        Assert.AreEqual("用户: null", result.Description);
+    }
+
+    /// <summary>
+    /// 测试格式化简单变量替换
+    /// </summary>
+    [TestMethod]
+    public void Should_Format_SimpleVariable_Success()
+    {
+        var format = "用户: {UserName}";
+        var expectedUserName = "TestUser";
+
+        s_mockValueStore.Set("UserName", expectedUserName);
+        var result = ActionAuditDescriptionFormatter.Format(format, s_mockValueStore, null);
+
+        Assert.AreEqual(format, result.Format);
+        Assert.AreEqual($"用户: {expectedUserName}", result.Description);
+    }
+
+    /// <summary>
+    /// 测试格式化静态文本
+    /// </summary>
+    [TestMethod]
+    public void Should_Format_StaticText_Success()
+    {
+        var format = "这是一个静态文本";
+        var result = ActionAuditDescriptionFormatter.Format(format, null, null);
+
+        Assert.AreEqual(format, result.Format);
+        Assert.AreEqual(format, result.Description);
+    }
+
+    /// <summary>
+    /// 测试格式化优先使用ValueStore中的值
+    /// </summary>
+    [TestMethod]
+    public void Should_PreferValueStore_OverArguments()
+    {
+        var format = "值: {Value}";
+        var valueStoreValue = "FromStore";
+        var argumentsValue = "FromArguments";
+
+        s_mockValueStore.Set("Value", valueStoreValue);
+        s_mockArguments.Set("Value", argumentsValue);
+        var result = ActionAuditDescriptionFormatter.Format(format, s_mockValueStore, s_mockArguments);
+
+        Assert.AreEqual($"值: {valueStoreValue}", result.Description);
+    }
+
+    /// <summary>
+    /// 测试格式化当ValueStore中不存在时使用Arguments中的值
+    /// </summary>
+    [TestMethod]
+    public void Should_UseArguments_WhenValueStoreNotExists()
+    {
+        var format = "值: {Value}";
+        var argumentsValue = "FromArguments";
+
+        s_mockArguments.Set("Value", argumentsValue);
+        var result = ActionAuditDescriptionFormatter.Format(format, null, s_mockArguments);
+
+        Assert.AreEqual($"值: {argumentsValue}", result.Description);
+    }
+
+    /// <summary>
+    /// 测试格式化缓存机制
+    /// </summary>
+    [TestMethod]
+    public void Should_UseCache_ForSameFormatString()
+    {
+        var format = "测试缓存: {Value}";
+        var value1 = "First";
+        var value2 = "Second";
+
+        s_mockValueStore.Set("Value", value1);
+        var result1 = ActionAuditDescriptionFormatter.Format(format, s_mockValueStore, null);
+
+        s_mockValueStore.Set("Value", value2);
+        var result2 = ActionAuditDescriptionFormatter.Format(format, s_mockValueStore, null);
+
+        Assert.AreEqual($"测试缓存: {value1}", result1.Description);
+        Assert.AreEqual($"测试缓存: {value2}", result2.Description);
+    }
+
+    #endregion Public 方法
+
+    #region Private 类
+
+    private class ExceptionTestClass
+    {
+        #region Public 属性
+
+        public string Property => throw new InvalidOperationException();
+
+        #endregion Public 属性
+    }
+
+    #endregion Private 类
+}

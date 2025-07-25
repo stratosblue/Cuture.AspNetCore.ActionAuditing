@@ -22,6 +22,15 @@ public class DefaultActionArguments(IDictionary<string, object?> arguments) : IA
 
     #endregion Public 属性
 
+    #region Public 构造函数
+
+    /// <inheritdoc cref="DefaultActionArguments"/>
+    public DefaultActionArguments(IEnumerable<KeyValuePair<string, object?>> arguments) : this(new Dictionary<string, object?>(arguments))
+    {
+    }
+
+    #endregion Public 构造函数
+
     #region Public 方法
 
     /// <inheritdoc/>
