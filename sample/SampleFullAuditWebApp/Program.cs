@@ -1,6 +1,7 @@
 ﻿using Cuture.AspNetCore.ActionAuditing;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using SampleFullAuditWebApp;
 using SampleFullAuditWebApp.Auditing;
 using SampleFullAuditWebApp.EntityFramework;
 
@@ -36,8 +37,10 @@ var app = builder.Build();
     await using var serviceScope = app.Services.CreateAsyncScope();
     using var dbContext = serviceScope.ServiceProvider.GetRequiredService<DataDbContext>();
     await dbContext.Database.EnsureCreatedAsync();
-    dbContext.UserPermissions.Add(new UserPermission(0, UserId, "ReadPermission"));
-    dbContext.UserPermissions.Add(new UserPermission(0, UserId, "WritePermission"));
+    foreach (var (descriptor, _) in PermissionDefine.EnumerateItems())  //遍历加入所有权限
+    {
+        dbContext.UserPermissions.Add(new UserPermission(0, UserId, descriptor.Value));
+    }
     await dbContext.SaveChangesAsync(default);
 }
 
@@ -52,7 +55,7 @@ if (app.Environment.IsDevelopment())
 var global = app.MapGroup(string.Empty)
                 .WithActionAuditing();
 
-global.MapGet("/Hello", [FeatureName("Hello")][PermissionRequired("Hello")][AuditDescription("SayHello")] () => "World");
+global.MapGet("/Hello", [FeatureName("Hello")][PermissionRequired(PermissionDefine.SayHelloConstant)][AuditDescription("SayHello")] () => "World");
 
 app.UseAuthorization();
 

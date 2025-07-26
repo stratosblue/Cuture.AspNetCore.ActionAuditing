@@ -109,7 +109,31 @@ dotnet add package Cuture.AspNetCore.ActionAuditing --prerelease
 |`IAuditValueStoreAccessor`|审查数据值存储访问器|访问数据值存储`IAuditValueStore`|
 |`IExecutingPermissionAuditor`|执行权限审核器|验证审计上下文是否允许执行动作|
 
-## 4. 示例
+## 4. 多级权限定义生成
+
+ - 必须为partial类型
+ - 必须标记`[GeneratedConstants]`特性
+ - 内部类型必须为partial类型
+ - 只生成类型的属性的对应常量
+ - 如下定义将自动生成常量 `PermissionDefine.Management.ViewAuditingLogsConstant` 其值为 `"MANAGEMENT:VIEW_AUDITING_LOGS"`
+   ```C#
+   [GeneratedConstants] //可通过配置 GeneratedConstants 参数控制生成细节
+   public partial class PermissionDefine
+   {
+       /// <summary>
+       /// 管理
+       /// </summary>
+       public partial class Management
+       {
+           /// <summary>
+           /// 查看审计日志
+           /// </summary>
+           public int ViewAuditingLogs { get; set; }
+       }
+   }
+   ```
+
+## 5. 示例
 更多功能参照示例程序
 - 基础的权限校验: [sample/SampleWebApp](sample/SampleWebApp/)
 - 完整的权限校验及数据变动审计: [sample/SampleFullAuditWebApp](sample/SampleFullAuditWebApp/)

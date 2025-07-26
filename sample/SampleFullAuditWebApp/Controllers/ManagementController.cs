@@ -12,7 +12,7 @@ namespace SampleFullAuditWebApp.Controllers;
 public class ManagementController(DataDbContext dbContext) : ControllerBase
 {
     [HttpGet]
-    [PermissionRequired("ReadPermission")]
+    [PermissionRequired(PermissionDefine.Management.ViewAuditingLogsConstant)]
     [AuditDescription("Get SystemAuditingLog with page: {page}, pageSize: {pageSize}.")]
     public Task<List<SystemAuditingLog>> GetLogsAsync(int page, int pageSize, CancellationToken cancellationToken)
     {

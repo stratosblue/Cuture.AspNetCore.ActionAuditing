@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "GenerateTest": {
+      "commandName": "DebugRoslynComponent",
+      "targetProject": "..\\..\\sample\\SampleFullAuditWebApp\\SampleFullAuditWebApp.csproj"
+    }
+  }
+}

@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using Cuture.AspNetCore.ActionAuditing.Abstractions;
 using Microsoft.AspNetCore.Http;
 
@@ -7,6 +8,7 @@ namespace Cuture.AspNetCore.ActionAuditing;
 /// <summary>
 /// 默认的 <inheritdoc cref="IActionRequiredPermissionResolver"/>
 /// </summary>
+[EditorBrowsable(EditorBrowsableState.Never)]
 public sealed class DefaultActionRequiredPermissionResolver : IActionRequiredPermissionResolver
 {
     #region Private 字段

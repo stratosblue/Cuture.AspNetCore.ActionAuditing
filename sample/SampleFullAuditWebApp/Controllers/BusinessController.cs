@@ -10,7 +10,7 @@ namespace SampleFullAuditWebApp.Controllers;
 [ApiController]
 [Route("[controller]/[action]")]
 [FeatureName("BusinessName")]
-[PermissionRequired("ReadPermission")]
+[PermissionRequired(PermissionDefine.SampleBusiness.ViewConstant)]
 public class BusinessController(DataDbContext dbContext, IAuditValueStore auditValueStore) : ControllerBase
 {
     [HttpGet]
@@ -33,7 +33,7 @@ public class BusinessController(DataDbContext dbContext, IAuditValueStore auditV
     }
 
     [HttpPost]
-    [PermissionRequired("WritePermission")]
+    [PermissionRequired(PermissionDefine.SampleBusiness.WriteBusinessDataConstant)]
     [AuditDescription("Add BusinessData {businessData.Name}.")]
     public async Task<BusinessData> Set(BusinessData businessData, CancellationToken cancellationToken)
     {
@@ -44,7 +44,7 @@ public class BusinessController(DataDbContext dbContext, IAuditValueStore auditV
     }
 
     [HttpPost]
-    [PermissionRequired("WritePermission")]
+    [PermissionRequired(PermissionDefine.SampleBusiness.WriteBusinessDataConstant)]
     [AuditDescription("Update BusinessData {businessData.Name}.")]
     public async Task<BusinessData> Update(BusinessData businessData, CancellationToken cancellationToken)
     {
@@ -63,7 +63,7 @@ public class BusinessController(DataDbContext dbContext, IAuditValueStore auditV
 
 
     [HttpPost]
-    [PermissionRequired("WritePermission")]
+    [PermissionRequired(PermissionDefine.SampleBusiness.WriteBusinessDataConstant)]
     [AuditDescription("Update BusinessData {id}.")]
     public async Task<bool> Delete(long id, CancellationToken cancellationToken)
     {

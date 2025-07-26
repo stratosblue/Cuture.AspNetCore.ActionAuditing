@@ -12,6 +12,7 @@
     <File Path="README.md" />
   </Folder>
   <Folder Name="/src/">
+    <Project Path="src/Cuture.AspNetCore.ActionAuditing.Generator/Cuture.AspNetCore.ActionAuditing.Generator.csproj" />
     <Project Path="src/Cuture.AspNetCore.ActionAuditing/Cuture.AspNetCore.ActionAuditing.csproj" />
   </Folder>
   <Folder Name="/test/">

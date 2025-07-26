@@ -12,6 +12,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Cuture.AspNetCore.ActionAuditing\Cuture.AspNetCore.ActionAuditing.csproj" />
+
+    <ProjectReference Include="..\..\src\Cuture.AspNetCore.ActionAuditing.Generator\Cuture.AspNetCore.ActionAuditing.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
   </ItemGroup>
 
 </Project>
