@@ -14,21 +14,30 @@ public class DefaultActionAuditingHandler(ILogger<DefaultActionAuditingHandler> 
     /// <inheritdoc/>
     public override ValueTask HandleDeniedAsync(ActionAuditingExecutingContext context, CancellationToken cancellationToken)
     {
-        logger.LogWarning("Unable to pass the audit and refuse to execute the action: {Description}", GetAuditDescription(context));
+        if (logger.IsEnabled(LogLevel.Warning))
+        {
+            logger.LogWarning("Unable to pass the audit and refuse to execute the action: {Description}", GetAuditDescription(context));
+        }
         return base.HandleDeniedAsync(context, cancellationToken);
     }
 
     /// <inheritdoc/>
     public override ValueTask HandleExceptionAsync(ActionAuditingExecutingContext context, CancellationToken cancellationToken)
     {
-        logger.LogWarning("Audit approved but failed to execute action: {Description}", GetAuditDescription(context));
+        if (logger.IsEnabled(LogLevel.Warning))
+        {
+            logger.LogWarning("Audit approved but failed to execute action: {Description}", GetAuditDescription(context));
+        }
         return base.HandleExceptionAsync(context, cancellationToken);
     }
 
     /// <inheritdoc/>
     public override ValueTask HandleSuccessAsync(ActionAuditingExecutingContext context, CancellationToken cancellationToken)
     {
-        logger.LogInformation("Audit approved and successfully executed action: {Description}", GetAuditDescription(context));
+        if (logger.IsEnabled(LogLevel.Information))
+        {
+            logger.LogInformation("Audit approved and successfully executed action: {Description}", GetAuditDescription(context));
+        }
         return base.HandleSuccessAsync(context, cancellationToken);
     }
 

@@ -14,7 +14,7 @@
   <!--Package-->
   <PropertyGroup>
 
-    <Version>1.0.0-pre-004</Version>
+    <Version>1.0.0-pre-005</Version>
 
     <Description>`AspNetCore`的审计框架。支持`Controller`和`MinimalAPI`。使权限和操作审核更容易。A auditing framework for `AspNetCore`. Support `Controller` and `MinimalAPI`. Make permission and operation auditing easier.</Description>
 

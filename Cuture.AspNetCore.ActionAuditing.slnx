@@ -14,6 +14,10 @@
     <File Path="LICENSE.txt" />
     <File Path="README.md" />
   </Folder>
+  <Folder Name="/solution items/.github/" />
+  <Folder Name="/solution items/.github/workflows/">
+    <File Path=".github/workflows/PublishNugetPackage.yml" />
+  </Folder>
   <Folder Name="/src/">
     <Project Path="src/Cuture.AspNetCore.ActionAuditing.Generator/Cuture.AspNetCore.ActionAuditing.Generator.csproj" />
     <Project Path="src/Cuture.AspNetCore.ActionAuditing/Cuture.AspNetCore.ActionAuditing.csproj" />

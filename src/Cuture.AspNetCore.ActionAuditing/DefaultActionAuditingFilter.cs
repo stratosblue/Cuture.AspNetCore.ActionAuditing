@@ -34,7 +34,10 @@ public class DefaultActionAuditingFilter(ILogger<DefaultActionAuditingFilter> lo
             return InnerPredicateAsync(endpoint);
         }
 
-        logger.LogWarning("Request {Path} cannot get endpoint to predicate for auditing.", httpContext.Request.Path);
+        if (logger.IsEnabled(LogLevel.Warning))
+        {
+            logger.LogWarning("Request {Path} cannot get endpoint to predicate for auditing.", httpContext.Request.Path);
+        }
         return ValueTask.FromResult(false);
     }
 

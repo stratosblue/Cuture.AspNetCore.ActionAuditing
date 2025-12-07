@@ -72,7 +72,10 @@ public abstract class AsyncAuditDataStorage<TData> : IAuditDataStorage, IDisposa
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogWarning(ex, "Audit data save failed: {Data}", data);
+                    if (Logger.IsEnabled(LogLevel.Warning))
+                    {
+                        Logger.LogWarning(ex, "Audit data save failed: {Data}", data);
+                    }
                 }
             }
         }
