@@ -62,7 +62,7 @@ public class DefaultActionArgumentsTest
         var result = arguments.Remove("not_exist_key");
 
         Assert.IsFalse(result);
-        Assert.AreEqual(originalCount, dictionary.Count);
+        Assert.HasCount(originalCount, dictionary);
     }
 
     /// <summary>
@@ -78,7 +78,7 @@ public class DefaultActionArgumentsTest
         var result = arguments.Remove("key1");
 
         Assert.IsTrue(result);
-        Assert.AreEqual(originalCount - 1, dictionary.Count);
+        Assert.HasCount(originalCount - 1, dictionary);
     }
 
     /// <summary>
@@ -108,7 +108,7 @@ public class DefaultActionArgumentsTest
         var result = arguments.Set(newKey, newValue);
 
         Assert.IsTrue(result);
-        Assert.AreEqual(originalCount + 1, dictionary.Count);
+        Assert.HasCount(originalCount + 1, dictionary);
         Assert.AreEqual(newValue, dictionary[newKey]);
     }
 

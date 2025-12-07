@@ -43,7 +43,7 @@ public class ActionPermissionRequiredTest : AuditingCallbackTestBase
     #region Public 方法
 
     [TestMethod]
-    [DynamicData(nameof(ShouldApprovedTests), DynamicDataSourceType.Method)]
+    [DynamicData(nameof(ShouldApprovedTests))]
     public async Task Should_Approved(RequiredPermissionPathTest test)
     {
         CurrentAuditingSyncCallback = (context) =>
@@ -60,7 +60,7 @@ public class ActionPermissionRequiredTest : AuditingCallbackTestBase
     }
 
     [TestMethod]
-    [DynamicData(nameof(ShouldDeniedTests), DynamicDataSourceType.Method)]
+    [DynamicData(nameof(ShouldDeniedTests))]
     public async Task Should_Denied(RequiredPermissionPathTest test)
     {
         CurrentAuditingSyncCallback = (context) =>

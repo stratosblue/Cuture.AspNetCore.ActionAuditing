@@ -20,7 +20,7 @@ public class DefaultEndpointActionArgumentsTest
 
         var result = DefaultEndpointActionArguments.CreateArgumentNameMap(context);
 
-        Assert.AreEqual(3, result.Count);
+        Assert.HasCount(3, result);
         Assert.IsTrue(result.ContainsKey("param1"));
         Assert.IsTrue(result.ContainsKey("param2"));
         Assert.IsTrue(result.ContainsKey("param3"));
@@ -34,7 +34,7 @@ public class DefaultEndpointActionArgumentsTest
 
         var enumeratedItems = actionArguments.ToList();
 
-        Assert.AreEqual(3, enumeratedItems.Count);
+        Assert.HasCount(3, enumeratedItems);
         Assert.AreEqual("param1", enumeratedItems[0].Key);
         Assert.AreEqual("value1", enumeratedItems[0].Value);
         Assert.AreEqual("param2", enumeratedItems[1].Key);

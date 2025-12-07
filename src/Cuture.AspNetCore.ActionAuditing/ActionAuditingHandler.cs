@@ -1,7 +1,5 @@
 ﻿using Cuture.AspNetCore.ActionAuditing.Abstractions;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Cuture.AspNetCore.ActionAuditing;
 

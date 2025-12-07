@@ -14,7 +14,7 @@ public class DefaultAuditValueStoreTest
         var store = new DefaultAuditValueStore();
 
         // Assert
-        Assert.AreEqual(0, store.Count);
+        Assert.IsEmpty(store);
     }
 
     [TestMethod]
@@ -31,7 +31,7 @@ public class DefaultAuditValueStoreTest
         var store = new DefaultAuditValueStore(items);
 
         // Assert
-        Assert.AreEqual(2, store.Count);
+        Assert.HasCount(2, store);
         Assert.AreEqual("value1", store["key1"]);
         Assert.AreEqual(123, store["key2"]);
     }
@@ -47,7 +47,7 @@ public class DefaultAuditValueStoreTest
         store.Set("testkey", "value2");
 
         // Assert
-        Assert.AreEqual(2, store.Count);
+        Assert.HasCount(2, store);
         Assert.AreEqual("value1", store["TestKey"]);
         Assert.AreEqual("value2", store["testkey"]);
     }
@@ -62,7 +62,7 @@ public class DefaultAuditValueStoreTest
         store.Set("testKey", "testValue");
 
         // Assert
-        Assert.AreEqual(1, store.Count);
+        Assert.HasCount(1, store);
         Assert.AreEqual("testValue", store["testKey"]);
     }
 
@@ -76,7 +76,7 @@ public class DefaultAuditValueStoreTest
         store.Set("nullKey", null);
 
         // Assert
-        Assert.AreEqual(1, store.Count);
+        Assert.HasCount(1, store);
         Assert.IsNull(store["nullKey"]);
     }
 
@@ -93,7 +93,7 @@ public class DefaultAuditValueStoreTest
         store.Set("existingKey", "newValue");
 
         // Assert
-        Assert.AreEqual(1, store.Count);
+        Assert.HasCount(1, store);
         Assert.AreEqual("newValue", store["existingKey"]);
     }
 
@@ -122,7 +122,7 @@ public class DefaultAuditValueStoreTest
         store.SetValue(testObj.Nested.Property);
 
         // Assert
-        Assert.AreEqual(6, store.Count);
+        Assert.HasCount(6, store);
 
         Assert.IsTrue(store.TryGetValue("testObj", out object? value));
         Assert.AreEqual(testObj, value);

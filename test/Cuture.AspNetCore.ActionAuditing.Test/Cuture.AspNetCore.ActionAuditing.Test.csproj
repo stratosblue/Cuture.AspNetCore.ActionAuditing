@@ -5,21 +5,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <AssemblyAttribute Include="Microsoft.VisualStudio.TestTools.UnitTesting.ParallelizeAttribute"/>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Moq" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <Using Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.TestHost" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <ProjectReference Include="..\..\src\Cuture.AspNetCore.ActionAuditing\Cuture.AspNetCore.ActionAuditing.csproj" />
     <ProjectReference Include="..\Cuture.AspNetCore.ActionAuditing.TestHost\Cuture.AspNetCore.ActionAuditing.TestHost.csproj" />
   </ItemGroup>
-  
+
 </Project>

@@ -44,7 +44,7 @@ public class VariablePropertyAccessPathTest
 
         // Assert
         Assert.AreEqual("user", result.VariableName);
-        Assert.AreEqual(0, result.Paths.Length);
+        Assert.IsEmpty(result.Paths);
     }
 
     [TestMethod]

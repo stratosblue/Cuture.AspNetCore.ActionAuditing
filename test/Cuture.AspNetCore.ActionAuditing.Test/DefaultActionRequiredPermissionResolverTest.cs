@@ -23,9 +23,9 @@ public class DefaultActionRequiredPermissionResolverTests
         var result = await resolver.ResolveAsync(actionExecutingContext.HttpContext);
 
         // Assert
-        Assert.AreEqual(2, result.Permissions.Length);
-        Assert.IsTrue(result.Permissions.Contains("Read"));
-        Assert.IsTrue(result.Permissions.Contains("Write"));
+        Assert.HasCount(2, result.Permissions);
+        Assert.Contains("Read", result.Permissions);
+        Assert.Contains("Write", result.Permissions);
     }
 
     [TestMethod]
@@ -42,7 +42,7 @@ public class DefaultActionRequiredPermissionResolverTests
         var result = await resolver.ResolveAsync(actionExecutingContext.HttpContext);
 
         // Assert
-        Assert.AreEqual(3, result.Permissions.Length);
+        Assert.HasCount(3, result.Permissions);
         Assert.AreEqual(1, result.Permissions.Count(p => p == "Read"));
         Assert.AreEqual(1, result.Permissions.Count(p => p == "Write"));
         Assert.AreEqual(1, result.Permissions.Count(p => p == "Execute"));
@@ -62,9 +62,9 @@ public class DefaultActionRequiredPermissionResolverTests
         var result = await resolver.ResolveAsync(actionExecutingContext.HttpContext);
 
         // Assert
-        Assert.AreEqual(2, result.Permissions.Length);
-        Assert.IsTrue(result.Permissions.Contains("Read"));
-        Assert.IsTrue(result.Permissions.Contains("Write"));
+        Assert.HasCount(2, result.Permissions);
+        Assert.Contains("Read", result.Permissions);
+        Assert.Contains("Write", result.Permissions);
     }
 
     [TestMethod]
@@ -78,7 +78,7 @@ public class DefaultActionRequiredPermissionResolverTests
         var result = await resolver.ResolveAsync(actionExecutingContext.HttpContext);
 
         // Assert
-        Assert.AreEqual(0, result.Permissions.Length);
+        Assert.IsEmpty(result.Permissions);
     }
 
     [TestMethod]

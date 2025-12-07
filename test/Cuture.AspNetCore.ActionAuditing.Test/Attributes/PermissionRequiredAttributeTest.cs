@@ -33,7 +33,7 @@ public class PermissionRequiredAttributeTest
         var attribute = new PermissionRequiredAttribute(permission);
 
         // Assert
-        Assert.AreEqual(1, attribute.Permissions.Length);
+        Assert.HasCount(1, attribute.Permissions);
         Assert.AreEqual(permission, attribute.Permissions[0]);
     }
 
@@ -47,7 +47,7 @@ public class PermissionRequiredAttributeTest
         var attribute = new PermissionRequiredAttribute(permissions);
 
         // Assert
-        Assert.AreEqual(2, attribute.Permissions.Length);
+        Assert.HasCount(2, attribute.Permissions);
         Assert.AreEqual("Read", attribute.Permissions[0]);
         Assert.AreEqual("Write", attribute.Permissions[1]);
     }

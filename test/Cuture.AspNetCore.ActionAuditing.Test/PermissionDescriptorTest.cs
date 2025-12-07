@@ -17,7 +17,7 @@ public class PermissionDescriptorTest
         var descriptor = new PermissionDescriptor(permissions);
 
         // Assert
-        Assert.AreEqual(0, descriptor.Permissions.Length);
+        Assert.IsEmpty(descriptor.Permissions);
         Assert.IsFalse(descriptor.IsDefined);
     }
 
@@ -33,8 +33,8 @@ public class PermissionDescriptorTest
         var descriptor2 = new PermissionDescriptor(permissions, null);
 
         // Assert
-        Assert.AreEqual(0, descriptor1.Properties.Count);
-        Assert.AreEqual(0, descriptor2.Properties.Count);
+        Assert.IsEmpty(descriptor1.Properties);
+        Assert.IsEmpty(descriptor2.Properties);
     }
 
     [TestMethod]
@@ -46,7 +46,7 @@ public class PermissionDescriptorTest
         // Assert
         Assert.IsFalse(descriptor.IsDefined);
         Assert.IsTrue(descriptor.Permissions.IsDefaultOrEmpty);
-        Assert.AreEqual(0, descriptor.Properties.Count);
+        Assert.IsEmpty(descriptor.Properties);
     }
 
     [TestMethod]
@@ -59,9 +59,9 @@ public class PermissionDescriptorTest
         var descriptor = new PermissionDescriptor(permissions);
 
         // Assert
-        Assert.AreEqual(2, descriptor.Permissions.Length);
-        Assert.IsTrue(descriptor.Permissions.Contains("Read"));
-        Assert.IsTrue(descriptor.Permissions.Contains("Write"));
+        Assert.HasCount(2, descriptor.Permissions);
+        Assert.Contains("Read", descriptor.Permissions);
+        Assert.Contains("Write", descriptor.Permissions);
         Assert.IsTrue(descriptor.IsDefined);
     }
 
@@ -80,7 +80,7 @@ public class PermissionDescriptorTest
         var descriptor = new PermissionDescriptor(permissions, properties);
 
         // Assert
-        Assert.AreEqual(2, descriptor.Properties.Count);
+        Assert.HasCount(2, descriptor.Properties);
         Assert.AreEqual("Value1", descriptor.Properties["Prop1"]);
         Assert.IsNull(descriptor.Properties["Prop2"]);
     }
@@ -95,7 +95,7 @@ public class PermissionDescriptorTest
         var descriptor = new PermissionDescriptor(permissions);
 
         // Assert
-        Assert.AreEqual(2, descriptor.Permissions.Length);
+        Assert.HasCount(2, descriptor.Permissions);
     }
 
     [TestMethod]

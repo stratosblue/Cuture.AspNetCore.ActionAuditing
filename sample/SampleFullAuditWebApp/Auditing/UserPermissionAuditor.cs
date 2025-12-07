@@ -1,5 +1,4 @@
 ﻿using Cuture.AspNetCore.ActionAuditing.Abstractions;
-using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 using SampleFullAuditWebApp.EntityFramework;
 
