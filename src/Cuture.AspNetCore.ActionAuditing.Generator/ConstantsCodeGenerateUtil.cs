@@ -35,8 +35,6 @@ internal static class ConstantsCodeGenerateUtil
         if (!string.IsNullOrEmpty(@namespace))
         {
             builder.AppendLine($$"""
-                               #pragma warning disable IDE0005
-
                                using System;
                                using System.Collections.Immutable;
                                using System.ComponentModel;
