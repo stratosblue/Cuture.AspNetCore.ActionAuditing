@@ -24,7 +24,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Cuture.AspNetCore.ActionAuditing.Generator\Cuture.AspNetCore.ActionAuditing.Generator.csproj" PrivateAssets="All" />
-
   </ItemGroup>
 
   <Target Name="_IncludeCutureAspNetCoreActionAuditingGenerator" BeforeTargets="_GetPackageFiles">
