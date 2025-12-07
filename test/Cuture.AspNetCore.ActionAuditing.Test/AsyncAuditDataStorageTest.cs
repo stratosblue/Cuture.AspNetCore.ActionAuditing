@@ -17,41 +17,36 @@ public class AsyncAuditDataStorageTest
     /// </summary>
     public class TestAsyncAuditDataStorage : AsyncAuditDataStorage<string>
     {
+        #region Public 构造函数
+
         public TestAsyncAuditDataStorage(ILogger<AsyncAuditDataStorage<string>> logger) : base(logger)
         {
         }
+
+        #endregion Public 构造函数
+
+        #region Protected Internal 方法
+
+        protected internal override Task SaveDataAsync(string data, CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
+        }
+
+        #endregion Protected Internal 方法
+
+        #region Protected 方法
 
         protected override ValueTask<string> CreateDataAsync(ActionAuditingExecutingContext context, CancellationToken cancellationToken)
         {
             return ValueTask.FromResult("testData");
         }
 
-        protected internal override Task SaveDataAsync(string data, CancellationToken cancellationToken)
-        {
-            return Task.CompletedTask;
-        }
+        #endregion Protected 方法
     }
 
-    #endregion
+    #endregion 测试辅助类
 
     #region 测试方法
-
-    /// <summary>
-    /// 测试构造函数是否正确初始化
-    /// </summary>
-    [TestMethod]
-    public void Constructor_ShouldInitializeCorrectly()
-    {
-        // Arrange
-        var mockLogger = new Mock<ILogger<AsyncAuditDataStorage<string>>>();
-
-        // Act
-        var storage = new TestAsyncAuditDataStorage(mockLogger.Object);
-
-        // Assert
-        Assert.IsNotNull(storage.DataChannel);
-        Assert.IsFalse(storage.RunningCancellationToken.IsCancellationRequested);
-    }
 
     /// <summary>
     /// 测试AddAsync方法是否正确写入数据到通道
@@ -73,6 +68,23 @@ public class AsyncAuditDataStorageTest
     }
 
     /// <summary>
+    /// 测试构造函数是否正确初始化
+    /// </summary>
+    [TestMethod]
+    public void Constructor_ShouldInitializeCorrectly()
+    {
+        // Arrange
+        var mockLogger = new Mock<ILogger<AsyncAuditDataStorage<string>>>();
+
+        // Act
+        var storage = new TestAsyncAuditDataStorage(mockLogger.Object);
+
+        // Assert
+        Assert.IsNotNull(storage.DataChannel);
+        Assert.IsFalse(storage.RunningCancellationToken.IsCancellationRequested);
+    }
+
+    /// <summary>
     /// 测试Dispose方法是否取消运行令牌
     /// </summary>
     [TestMethod]
@@ -90,6 +102,24 @@ public class AsyncAuditDataStorageTest
     }
 
     /// <summary>
+    /// 测试Dispose方法是否处理多次调用
+    /// </summary>
+    [TestMethod]
+    public void Dispose_ShouldHandleMultipleCalls()
+    {
+        // Arrange
+        var mockLogger = new Mock<ILogger<AsyncAuditDataStorage<string>>>();
+        var storage = new TestAsyncAuditDataStorage(mockLogger.Object);
+
+        // Act
+        storage.Dispose();
+        storage.Dispose(); // 第二次调用
+
+        // Assert
+        Assert.IsTrue(storage.RunningCancellationToken.IsCancellationRequested);
+    }
+
+    /// <summary>
     /// 测试当SaveDataAsync抛出异常时是否记录日志
     /// </summary>
     [TestMethod]
@@ -97,6 +127,9 @@ public class AsyncAuditDataStorageTest
     {
         // Arrange
         var mockLogger = new Mock<ILogger<AsyncAuditDataStorage<string>>>();
+        mockLogger.Setup(x => x.IsEnabled(LogLevel.Warning))
+                  .Returns(true);
+
         var storage = new Mock<TestAsyncAuditDataStorage>(mockLogger.Object) { CallBase = true };
         storage.Setup(x => x.SaveDataAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
                .ThrowsAsync(new Exception("Test exception"));
@@ -141,23 +174,5 @@ public class AsyncAuditDataStorageTest
             Times.AtLeastOnce);
     }
 
-    /// <summary>
-    /// 测试Dispose方法是否处理多次调用
-    /// </summary>
-    [TestMethod]
-    public void Dispose_ShouldHandleMultipleCalls()
-    {
-        // Arrange
-        var mockLogger = new Mock<ILogger<AsyncAuditDataStorage<string>>>();
-        var storage = new TestAsyncAuditDataStorage(mockLogger.Object);
-
-        // Act
-        storage.Dispose();
-        storage.Dispose(); // 第二次调用
-
-        // Assert
-        Assert.IsTrue(storage.RunningCancellationToken.IsCancellationRequested);
-    }
-
-    #endregion
+    #endregion 测试方法
 }

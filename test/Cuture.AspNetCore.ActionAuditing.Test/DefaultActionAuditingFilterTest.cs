@@ -64,6 +64,13 @@ public class DefaultActionAuditingFilterTest
         Assert.IsTrue(result);
     }
 
+    [TestInitialize]
+    public void TestInitialize()
+    {
+        _loggerMock.Setup(x => x.IsEnabled(LogLevel.Warning))
+                   .Returns(true);
+    }
+
     #endregion Public 方法
 
     #region Private 方法
