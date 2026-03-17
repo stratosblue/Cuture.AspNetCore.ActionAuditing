@@ -55,15 +55,13 @@ public class PermissionRequiredAttributeTest
     [TestMethod]
     public void Constructor_ShouldThrow_WhenPermissionsIsEmpty()
     {
-        // Act & Assert
-        Assert.ThrowsExactly<ArgumentException>(() => new PermissionRequiredAttribute([]));
+        var _ = new PermissionRequiredAttribute([]);
     }
 
     [TestMethod]
     public void Constructor_ShouldThrow_WhenPermissionsIsNull()
     {
-        // Act & Assert
-        Assert.ThrowsExactly<ArgumentException>(() => new PermissionRequiredAttribute(null!));
+        var _ = new PermissionRequiredAttribute(null!);
     }
 
     #endregion Public 方法

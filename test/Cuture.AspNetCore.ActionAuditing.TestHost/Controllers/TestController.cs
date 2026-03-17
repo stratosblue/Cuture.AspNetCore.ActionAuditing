@@ -6,6 +6,15 @@ namespace Cuture.AspNetCore.ActionAuditing.TestHost.Controllers;
 [Route("[controller]/[action]")]
 public class TestController : ControllerBase
 {
+    #region Public 方法
+
+    [HttpGet]
+    [PermissionRequired]
+    public string NoPermission1()
+    {
+        return Request.Path;
+    }
+
     [HttpGet]
     [PermissionRequired("1Permission1")]
     public string Permission1()
@@ -34,4 +43,6 @@ public class TestController : ControllerBase
     {
         return Request.Path;
     }
+
+    #endregion Public 方法
 }

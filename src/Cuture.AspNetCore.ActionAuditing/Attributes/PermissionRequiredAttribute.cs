@@ -6,35 +6,17 @@ using Cuture.AspNetCore.ActionAuditing.Abstractions;
 namespace Cuture.AspNetCore.ActionAuditing;
 
 /// <summary>
-/// 描述需要的权限
+/// 描述需要进行审计的权限
 /// </summary>
+/// <param name="permissions">权限列表 (不传递此值以表示审计但不验证权限)</param>
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = true, AllowMultiple = true)]
-public sealed class PermissionRequiredAttribute
+public sealed class PermissionRequiredAttribute(params string[]? permissions)
     : Attribute, IRequiredPermissionProvider
 {
     #region Public 属性
 
     /// <inheritdoc/>
-    public ImmutableArray<string> Permissions { get; }
+    public ImmutableArray<string> Permissions { get; } = permissions is null || permissions.Length == 0 ? [] : ImmutableArray.Create(permissions);
 
     #endregion Public 属性
-
-    #region Public 构造函数
-
-    /// <summary>
-    /// <inheritdoc cref="PermissionRequiredAttribute"/>
-    /// </summary>
-    /// <param name="permissions">权限列表</param>
-    public PermissionRequiredAttribute(params string[] permissions)
-    {
-        if (permissions is null
-            || permissions.Length == 0)
-        {
-            throw new ArgumentException("Permissions must include values", nameof(permissions));
-        }
-
-        Permissions = ImmutableArray.Create(permissions);
-    }
-
-    #endregion Public 构造函数
 }

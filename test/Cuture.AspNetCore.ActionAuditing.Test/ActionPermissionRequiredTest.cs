@@ -75,5 +75,20 @@ public class ActionPermissionRequiredTest : AuditingCallbackTestBase
         Assert.AreEqual(System.Net.HttpStatusCode.Forbidden, response.StatusCode);
     }
 
+    [TestMethod]
+    public async Task Should_NoPermissionRequired_Approved()
+    {
+        CurrentAuditingSyncCallback = (context) =>
+        {
+            var requiredPermission = context.RequiredPermission;
+            Assert.IsFalse(requiredPermission.IsDefined);
+            return true;
+        };
+
+        var response = await TestClient.GetAsync("/Test/NoPermission1");
+        Assert.AreEqual(System.Net.HttpStatusCode.OK, response.StatusCode);
+        Assert.AreEqual("/Test/NoPermission1", await response.Content.ReadAsStringAsync());
+    }
+
     #endregion Public 方法
 }
