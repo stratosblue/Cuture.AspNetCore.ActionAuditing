@@ -1,4 +1,5 @@
 ﻿using Cuture.AspNetCore.ActionAuditing.Abstractions;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Moq;
 
@@ -19,7 +20,7 @@ public class AsyncAuditDataStorageTest
     {
         #region Public 构造函数
 
-        public TestAsyncAuditDataStorage(ILogger<AsyncAuditDataStorage<string>> logger) : base(logger)
+        public TestAsyncAuditDataStorage(ILogger<AsyncAuditDataStorage<string>> logger) : base(new TestHostApplicationLifetime(), logger)
         {
         }
 
@@ -42,6 +43,27 @@ public class AsyncAuditDataStorageTest
         }
 
         #endregion Protected 方法
+    }
+
+    private class TestHostApplicationLifetime : IHostApplicationLifetime
+    {
+        #region Public 属性
+
+        public CancellationToken ApplicationStarted { get; } = CancellationToken.None;
+
+        public CancellationToken ApplicationStopped { get; } = CancellationToken.None;
+
+        public CancellationToken ApplicationStopping { get; } = CancellationToken.None;
+
+        #endregion Public 属性
+
+        #region Public 方法
+
+        public void StopApplication()
+        {
+        }
+
+        #endregion Public 方法
     }
 
     #endregion 测试辅助类

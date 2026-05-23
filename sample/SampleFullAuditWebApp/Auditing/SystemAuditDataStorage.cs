@@ -4,8 +4,8 @@ using SampleFullAuditWebApp.EntityFramework;
 
 namespace SampleFullAuditWebApp.Auditing;
 
-public class SystemAuditDataStorage(IServiceScopeFactory serviceScopeFactory, ILogger<SystemAuditDataStorage> logger)
-    : AsyncAuditDataStorage<SystemAuditingLog>(logger)
+public class SystemAuditDataStorage(IServiceScopeFactory serviceScopeFactory, IHostApplicationLifetime applicationLifetime, ILogger<SystemAuditDataStorage> logger)
+    : AsyncAuditDataStorage<SystemAuditingLog>(applicationLifetime, logger)
 {
     private readonly AsyncServiceScope _serviceScope = serviceScopeFactory.CreateAsyncScope();
 

@@ -1,5 +1,6 @@
 ﻿using System.Threading.Channels;
 using Cuture.AspNetCore.ActionAuditing.Abstractions;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace Cuture.AspNetCore.ActionAuditing;
@@ -11,6 +12,8 @@ namespace Cuture.AspNetCore.ActionAuditing;
 public abstract class AsyncAuditDataStorage<TData> : IAuditDataStorage, IDisposable
 {
     #region Private 字段
+
+    private readonly IHostApplicationLifetime _applicationLifetime;
 
     private readonly CancellationTokenSource _runningCTS = new();
 
@@ -38,9 +41,10 @@ public abstract class AsyncAuditDataStorage<TData> : IAuditDataStorage, IDisposa
     #region Public 构造函数
 
     /// <inheritdoc cref="AsyncAuditDataStorage{TData}"/>
-    public AsyncAuditDataStorage(ILogger<AsyncAuditDataStorage<TData>> logger)
+    public AsyncAuditDataStorage(IHostApplicationLifetime applicationLifetime, ILogger<AsyncAuditDataStorage<TData>> logger)
     {
         Logger = logger;
+        _applicationLifetime = applicationLifetime;
         RunningCancellationToken = _runningCTS.Token;
         _ = RunSaveLoopAsync();
     }
@@ -81,7 +85,15 @@ public abstract class AsyncAuditDataStorage<TData> : IAuditDataStorage, IDisposa
         }
         catch (Exception ex)
         {
-            Logger.LogWarning(ex, "Asynchronous audit data storage has stopped working");
+            if (ex is OperationCanceledException
+                && _applicationLifetime.ApplicationStopping.IsCancellationRequested)
+            {
+                Logger.LogInformation("Asynchronous audit data storage has stopped working due to application is stopping");
+            }
+            else
+            {
+                Logger.LogWarning(ex, "Asynchronous audit data storage has stopped working");
+            }
         }
     }
 
