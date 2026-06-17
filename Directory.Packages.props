@@ -27,6 +27,12 @@
 
     <PackageVersion Include="Moq" Version="4.20.72" />
 
-    <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="8.*"/>
+    <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="10.*"/>
+  </ItemGroup>
+  <ItemGroup>
+    <GlobalPackageReference Include="Cuture.CodeAnalysis.LoggingCodeFixes" Version="1.2.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </GlobalPackageReference>
   </ItemGroup>
 </Project>

@@ -26,6 +26,12 @@ public abstract class TestServerBaseTest
 
     #endregion Protected 属性
 
+    #region Public 属性
+
+    public TestContext TestContext { get; set; } = null!;
+
+    #endregion Public 属性
+
     #region Public 方法
 
     [TestCleanup]

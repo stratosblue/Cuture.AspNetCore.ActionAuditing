@@ -20,7 +20,7 @@ public class DefaultActionRequiredPermissionResolverTests
         var actionExecutingContext = HttpContextHelper.CreateActionExecutingContext(attribute1, attribute2);
 
         // Act
-        var result = await resolver.ResolveAsync(actionExecutingContext.HttpContext);
+        var result = await resolver.ResolveAsync(actionExecutingContext.HttpContext, TestContext.CancellationToken);
 
         // Assert
         Assert.HasCount(2, result.Permissions);
@@ -39,13 +39,13 @@ public class DefaultActionRequiredPermissionResolverTests
         var actionExecutingContext = HttpContextHelper.CreateActionExecutingContext(attribute1, attribute2);
 
         // Act
-        var result = await resolver.ResolveAsync(actionExecutingContext.HttpContext);
+        var result = await resolver.ResolveAsync(actionExecutingContext.HttpContext, TestContext.CancellationToken);
 
         // Assert
         Assert.HasCount(3, result.Permissions);
-        Assert.AreEqual(1, result.Permissions.Count(p => p == "Read"));
-        Assert.AreEqual(1, result.Permissions.Count(p => p == "Write"));
-        Assert.AreEqual(1, result.Permissions.Count(p => p == "Execute"));
+        Assert.ContainsSingle(p => p == "Read", result.Permissions);
+        Assert.ContainsSingle(p => p == "Write", result.Permissions);
+        Assert.ContainsSingle(p => p == "Execute", result.Permissions);
     }
 
     [TestMethod]
@@ -59,7 +59,7 @@ public class DefaultActionRequiredPermissionResolverTests
         var actionExecutingContext = HttpContextHelper.CreateActionExecutingContext(attribute, customPermissionProvider);
 
         // Act
-        var result = await resolver.ResolveAsync(actionExecutingContext.HttpContext);
+        var result = await resolver.ResolveAsync(actionExecutingContext.HttpContext, TestContext.CancellationToken);
 
         // Assert
         Assert.HasCount(2, result.Permissions);
@@ -75,7 +75,7 @@ public class DefaultActionRequiredPermissionResolverTests
         var actionExecutingContext = HttpContextHelper.CreateActionExecutingContext();
 
         // Act
-        var result = await resolver.ResolveAsync(actionExecutingContext.HttpContext);
+        var result = await resolver.ResolveAsync(actionExecutingContext.HttpContext, TestContext.CancellationToken);
 
         // Assert
         Assert.IsEmpty(result.Permissions);
@@ -92,7 +92,7 @@ public class DefaultActionRequiredPermissionResolverTests
         var actionExecutingContext = HttpContextHelper.CreateActionExecutingContext(attribute);
 
         // Act
-        var result = await resolver.ResolveAsync(actionExecutingContext.HttpContext);
+        var result = await resolver.ResolveAsync(actionExecutingContext.HttpContext, TestContext.CancellationToken);
 
         // Assert
         CollectionAssert.AreEquivalent(permissions, result.Permissions.ToList());
@@ -110,6 +110,8 @@ public class DefaultActionRequiredPermissionResolverTests
 
         #endregion Public 属性
     }
+
+    public TestContext TestContext { get; set; }
 
     #endregion Private 类
 }

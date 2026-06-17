@@ -85,7 +85,7 @@ public class AsyncAuditDataStorageTest
         await storage.AddAsync(mockContext.Object, CancellationToken.None);
 
         // Assert
-        var result = await storage.DataChannel.Reader.ReadAsync();
+        var result = await storage.DataChannel.Reader.ReadAsync(TestContext.CancellationToken);
         Assert.AreEqual("testData", result);
     }
 
@@ -157,8 +157,8 @@ public class AsyncAuditDataStorageTest
                .ThrowsAsync(new Exception("Test exception"));
 
         // Act
-        await storage.Object.DataChannel.Writer.WriteAsync("testData");
-        await Task.Delay(100); // 给后台线程时间处理
+        await storage.Object.DataChannel.Writer.WriteAsync("testData", TestContext.CancellationToken);
+        await Task.Delay(100, TestContext.CancellationToken); // 给后台线程时间处理
 
         // Assert
         mockLogger.Verify(
@@ -183,7 +183,7 @@ public class AsyncAuditDataStorageTest
 
         // Act
         storage.Dispose();
-        await Task.Delay(100); // 给后台线程时间处理
+        await Task.Delay(100, TestContext.CancellationToken); // 给后台线程时间处理
 
         // Assert
         mockLogger.Verify(
@@ -195,6 +195,8 @@ public class AsyncAuditDataStorageTest
                 It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
             Times.AtLeastOnce);
     }
+
+    public TestContext TestContext { get; set; }
 
     #endregion 测试方法
 }

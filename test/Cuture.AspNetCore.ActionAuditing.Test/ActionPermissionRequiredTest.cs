@@ -54,9 +54,9 @@ public class ActionPermissionRequiredTest : AuditingCallbackTestBase
             return !requiredPermission.Permissions.Except(test.ProvidedPermissions).Any();
         };
 
-        var response = await TestClient.GetAsync(test.Path);
+        var response = await TestClient.GetAsync(test.Path, TestContext.CancellationToken);
         Assert.AreEqual(System.Net.HttpStatusCode.OK, response.StatusCode);
-        Assert.AreEqual(test.Path, await response.Content.ReadAsStringAsync());
+        Assert.AreEqual(test.Path, await response.Content.ReadAsStringAsync(TestContext.CancellationToken));
     }
 
     [TestMethod]
@@ -71,7 +71,7 @@ public class ActionPermissionRequiredTest : AuditingCallbackTestBase
             return !requiredPermission.Permissions.Except(test.ProvidedPermissions).Any();
         };
 
-        var response = await TestClient.GetAsync(test.Path);
+        var response = await TestClient.GetAsync(test.Path, TestContext.CancellationToken);
         Assert.AreEqual(System.Net.HttpStatusCode.Forbidden, response.StatusCode);
     }
 
@@ -85,10 +85,12 @@ public class ActionPermissionRequiredTest : AuditingCallbackTestBase
             return true;
         };
 
-        var response = await TestClient.GetAsync("/Test/NoPermission1");
+        var response = await TestClient.GetAsync("/Test/NoPermission1", TestContext.CancellationToken);
         Assert.AreEqual(System.Net.HttpStatusCode.OK, response.StatusCode);
-        Assert.AreEqual("/Test/NoPermission1", await response.Content.ReadAsStringAsync());
+        Assert.AreEqual("/Test/NoPermission1", await response.Content.ReadAsStringAsync(TestContext.CancellationToken));
     }
+
+    public TestContext TestContext { get; set; }
 
     #endregion Public 方法
 }
